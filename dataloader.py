@@ -26,7 +26,7 @@ random.seed(manual_seed)
 torch.manual_seed(manual_seed)
 
 # root directory of the dataset
-dataroot = "data"
+dataroot = "../data"
 #number of workers for dataloader
 num_workers = 1
 # batch size during training
@@ -48,6 +48,7 @@ lr = 0.0001
 beta = 0.5
 n_gpu = 1
 
+
 # create dataset
 transform_input = transforms.Compose([
     transforms.Resize(image_size),
@@ -57,13 +58,13 @@ transform_input = transforms.Compose([
     ])
 
 dataset = torchvision.datasets.ImageFolder(root=dataroot,
-                                           transform=transform_input)
+                                        transform=transform_input)
 
 #create data loader
 dataloader = torch.utils.data.DataLoader(dataset, 
-                                          batch_size=batch_size,
-                                          shuffle=True,
-                                          num_workers=num_workers)
+                                        batch_size=batch_size,
+                                        shuffle=True,
+                                        num_workers=num_workers)
 # device 
 device = torch.device("cuda:0" if (torch.cuda.is_available() and n_gpu > 1) else "cpu") 
 
@@ -73,4 +74,5 @@ def plot_sample(dataloader, n_img=64):
     plt.figsize=(8,8)
     plt.axis("off")
     plt.title("Sample of training images")
-    plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:2], padding=2, normalize=True).cpu(), (1,2,0)))
+    plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:64], padding=2, normalize=True).cpu(), (1,2,0)))
+    plt.show()
