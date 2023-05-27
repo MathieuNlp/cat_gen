@@ -4,7 +4,6 @@ import os
 import random
 import torchvision
 import torch.nn as nn
-import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data
@@ -23,6 +22,7 @@ print('Random Seed: ', manual_seed)
 random.seed(manual_seed)
 torch.manual_seed(manual_seed)
 
+# global variables 
 print("is gpu available ?:", torch.cuda.is_available())
 if torch.cuda.is_available() : 
     nb_gpu = 1
@@ -50,21 +50,31 @@ dis_f_size = 64
 num_epochs = 5
 # learning rate
 lr = 0.0001
-beta = 0.5
+beta1 = 0.5
 
-
+# Create dataloader
 dataloader = my_dataloader.dataloader
+device = my_dataloader.device
 
-# Implementation Part
-
+# Create generator 
+generator = gan.Generator(nb_gpu, z_size, gen_f_size)
 # Weight initialization
-# in the paper, all weights are initialized randomly with normal distrib. mean=0, std=0.02
-def weights_init(m) : 
-    classname = m.__class__.__name__
-    if classname.find("Conv") != -1 :
-        nn.init.normal_(m.weight.data, 0.0, 0.02) 
-    elif classname.find("BatchNorm") != -1 :
-        nn.init.normal_(m.weight.data, 1, 0.02) 
-        nn.init.constant_(m.bias.data, 0) # bias to 0
+generator.apply(gan.weights_init)
 
-# generator
+# Create discriminator 
+discriminator = gan.Discriminator(nb_gpu, dis_f_size)
+# Weight initialization
+discriminator.apply(gan.weights_init)
+
+loss = nn.BCELoss()
+# Create batch of latent vectors (for visualisation)
+fixed_noise = torch.randn(64, z_size, 1, 1, device=device)
+
+# convention for components (in paper)
+real_label = 1
+fake_label = 0
+
+optimizerG = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, 0.999))
+optimizerD = optim.Adam(discriminator.parameters(), lr=lr, betas=(beta1, 0.999))
+
+# training loop

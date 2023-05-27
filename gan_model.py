@@ -10,6 +10,17 @@ import torch.nn as nn
 # # discriminator feature map size
 # dis_f_size = 64
 
+
+# in the paper, all weights are initialized randomly with normal distrib. mean=0, std=0.02
+def weights_init(m) : 
+    classname = m.__class__.__name__
+    if classname.find("Conv") != -1 :
+        nn.init.normal_(m.weight.data, 0.0, 0.02) 
+    elif classname.find("BatchNorm") != -1 :
+        nn.init.normal_(m.weight.data, 1, 0.02) 
+        nn.init.constant_(m.bias.data, 0) # bias to 0
+
+        
 class Generator(nn.Module) :
     def __init__(self, nb_gpu, z_size, gen_f_size):
         super(Generator, self).__init__()
