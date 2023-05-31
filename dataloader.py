@@ -1,21 +1,21 @@
 import torch
-
-import torch
 import torchvision
-import torch.nn as nn
 import torch.utils.data
 import torchvision.transforms as transforms
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # root directory of the dataset
-dataroot = "../data"
+dataroot = "../data/cats"
 #number of workers for dataloader
 num_workers = 1
 # batch size during training
 batch_size = 128
 # training image size
 image_size = 64
+#number of channels
+num_channels = 3
 
 # transformation to the images
 transform_input = transforms.Compose([
@@ -31,11 +31,11 @@ dataset = torchvision.datasets.ImageFolder(root=dataroot,
 
 #create data loader
 dataloader = torch.utils.data.DataLoader(dataset, 
-                                        batch_size=batch_size,
+                                        batch_size=64,
                                         shuffle=True,
                                         num_workers=num_workers)
 # device 
-device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu") 
+device = torch.device("cuda" if (torch.cuda.is_available()) else "cpu") 
 
 # plot examples
 def plot_sample(dataloader, n_img=64):
