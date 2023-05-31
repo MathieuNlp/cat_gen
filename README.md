@@ -1,5 +1,5 @@
 # Cat Generator using DCGAN
-
+The model was trained on 50 epochs with small batches. The DCGAN need more training to perform better generation of cats.
 ## Folder layout
 
     ├── plots                         #Folder containing plots fake data vs real data and loss function
