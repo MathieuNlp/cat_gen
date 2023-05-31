@@ -9,5 +9,5 @@
     ├── dataloader.py                # setup dataloader
     └── main.py                      #train and group all the pieces
 
-#Source
+## Source
 Work greatly inspired by: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
