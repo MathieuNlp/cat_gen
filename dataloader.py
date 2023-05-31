@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # root directory of the dataset
-dataroot = "../data/"
+dataroot = "../data/cats"
 #number of workers for dataloader
 num_workers = 1
 # batch size during training

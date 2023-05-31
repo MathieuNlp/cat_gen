@@ -31,7 +31,7 @@ gen_f_size = 64
 # discriminator feature map size
 dis_f_size = 64
 # number of epochs
-num_epochs = 51
+num_epochs = 30
 # learning rate
 lr = 0.0001
 beta1 = 0.5
@@ -202,12 +202,12 @@ if __name__ == '__main__':
         plt.subplot(1,2,1)
         plt.axis("off")
         plt.title("Real Images")
-        plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:12], padding=5, normalize=True).cpu(),(1,2,0)))
+        plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(),(1,2,0)))
 
         # Plot the fake images from the last epoch
         plt.subplot(1,2,2)
         plt.axis("off")
         plt.title("Fake Images")
-        plt.imshow(np.transpose(img_list[-1][:12],(1,2,0)))
+        plt.imshow(np.transpose(img_list[-1][:64],(1,2,0)))
         plt.savefig("./plots/fake_vs_real.png")
     get_real_vs_fake(real_batch, img_list)
