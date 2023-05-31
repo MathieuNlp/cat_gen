@@ -28,3 +28,7 @@ python ./generate_fake.py
 
 ## Source
 Work greatly inspired by: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
+
+
+## Author
+Mathieu Nalpon
