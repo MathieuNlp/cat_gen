@@ -7,6 +7,7 @@
     ├── README.md
     ├── gan_model                    # classes of generator and discriminator
     ├── dataloader.py                # setup dataloader
+    ├── generate_fake.py             # generate 64 fake cats and compare them to real data
     └── main.py                      #train and group all the pieces
 
 
