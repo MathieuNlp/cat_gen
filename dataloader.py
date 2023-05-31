@@ -17,6 +17,9 @@ image_size = 64
 #number of channels
 num_channels = 3
 
+if __name__ == '__main__':
+    print("is main")
+    
 # transformation to the images
 transform_input = transforms.Compose([
     transforms.Resize(image_size),

@@ -25,13 +25,13 @@ import gan_model as gan
 # global variables 
 
 # latent vector size
-z_size = 10
+z_size = 100
 # generator feature map size
 gen_f_size = 64
 # discriminator feature map size
 dis_f_size = 64
 # number of epochs
-num_epochs = 30
+num_epochs = 50
 # learning rate
 lr = 0.0001
 beta1 = 0.5
@@ -148,15 +148,11 @@ if __name__ == '__main__':
 
                 iters+=1
             if (epoch % 10 == 0):
-                torch.save(generator.state_dict(), save_PATH+f"generator_checkpoint_{epoch // 10}.pt")
-                torch.save(discriminator.state_dict(), save_PATH+f"discriminator_checkpoint_{epoch // 10}.pt")
+                torch.save(generator.state_dict(), save_PATH+f"new_generator_checkpoint_{epoch // 10}.pt")
+                torch.save(discriminator.state_dict(), save_PATH+f"new_discriminator_checkpoint_{epoch // 10}.pt")
         return img_list, G_losses, D_losses
     
-    # trained_generator = gan.Generator(z_size, gen_f_size)
-    # trained_generator.load_state_dict(torch.load(save_PATH+"generator_checkpoint_1.pt"))
 
-    # trained_discriminator = gan.Discriminator(dis_f_size)
-    # trained_discriminator.load_state_dict(torch.load(save_PATH+"discriminator_checkpoint_1.pt"))
     img_list, G_losses, D_losses = train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device, num_epochs)
     # Save the trained model
     
