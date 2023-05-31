@@ -21,7 +21,7 @@ To run the training
 python ./main.py
 ```
 ## Generate fake sample
-To run the training
+To generate 64 cats from dcgan
 ```sh
 python ./generate_fake.py
 ```
