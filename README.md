@@ -1,4 +1,4 @@
-# Cat Generator
+# Cat Generator using DCGAN
 
 ## Folder layout
 
