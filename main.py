@@ -31,7 +31,7 @@ gen_f_size = 64
 # discriminator feature map size
 dis_f_size = 64
 # number of epochs
-num_epochs = 1
+num_epochs = 51
 # learning rate
 lr = 0.0001
 beta1 = 0.5
@@ -75,7 +75,8 @@ if __name__ == '__main__':
     # training loop
     
     # rules to take care : https://github.com/soumith/ganhacks
-    def train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device):
+    save_PATH = "./saved_model/"
+    def train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device, num_epochs):
         img_list = []
         G_losses = []
         D_losses = []
@@ -83,7 +84,7 @@ if __name__ == '__main__':
 
         print('-'*5, 'Start Trainnig', '-'*5)
         for epoch in range(num_epochs) : 
-            for i, data in enumerate(dataloader, 0):
+            for i, data in enumerate(dataloader):
                 # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
                 ## Train with all-real batch
                 discriminator.zero_grad()
@@ -144,21 +145,31 @@ if __name__ == '__main__':
                     with torch.no_grad():
                         fake = generator(fixed_noise).detach().cpu()
                     img_list.append(torchvision.utils.make_grid(fake, padding=2, normalize=True))
-                
-                iters+=1
-            return img_list, G_losses, D_losses
 
-    # img_list, G_losses, D_losses = train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device)
+                iters+=1
+            if (epoch % 10 == 0):
+                torch.save(generator.state_dict(), save_PATH+f"generator_checkpoint_{epoch // 10}.pt")
+                torch.save(discriminator.state_dict(), save_PATH+f"discriminator_checkpoint_{epoch // 10}.pt")
+        return img_list, G_losses, D_losses
+    
+    # trained_generator = gan.Generator(z_size, gen_f_size)
+    # trained_generator.load_state_dict(torch.load(save_PATH+"generator_checkpoint_1.pt"))
+
+    # trained_discriminator = gan.Discriminator(dis_f_size)
+    # trained_discriminator.load_state_dict(torch.load(save_PATH+"discriminator_checkpoint_1.pt"))
+    img_list, G_losses, D_losses = train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device, num_epochs)
     # Save the trained model
-    save_PATH = "./saved_model/dcgan.pt"
-    # torch.save(generator.state_dict(), save_PATH)
+    
+    #torch.save(generator.state_dict(), save_PATH)
 
     # Load model
-    img_list = []
-    trained_model = gan.Generator(z_size, gen_f_size)
-    trained_model.load_state_dict(torch.load(save_PATH))
-    fake = generator(fixed_noise).detach().cpu()
-    img_list.append(torchvision.utils.make_grid(fake, padding=2, normalize=True))
+    def load_and_generate(save_PATH, fixed_noise): 
+        img_list = []
+        trained_model = gan.Generator(z_size, gen_f_size)
+        trained_model.load_state_dict(torch.load(save_PATH))
+        fake = generator(fixed_noise).detach().cpu()
+        img_list.append(torchvision.utils.make_grid(fake, padding=2, normalize=True))
+    #load_and_generate(save_PATH, fixed_noise)
 
     # Print loss generator vs discriminator
     def plot_loss(G_loss, D_loss):
@@ -170,8 +181,8 @@ if __name__ == '__main__':
         plt.xlabel("iterations")
         plt.ylabel("Loss")
         plt.legend()
-        plt.show()
-    #plot_loss(G_losses, D_losses)
+        plt.savefig("./plots/loss_function.png")
+    plot_loss(G_losses, D_losses)
 
     # Visualisation of generator's progress
     def visu_progress(img_list):
@@ -179,7 +190,6 @@ if __name__ == '__main__':
         plt.axis("off")
         ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
         ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
-
         HTML(ani.to_jshtml())
     # Grab a batch of real images from the dataloader
 
@@ -192,12 +202,12 @@ if __name__ == '__main__':
         plt.subplot(1,2,1)
         plt.axis("off")
         plt.title("Real Images")
-        plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:64], padding=5, normalize=True).cpu(),(1,2,0)))
+        plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:12], padding=5, normalize=True).cpu(),(1,2,0)))
 
         # Plot the fake images from the last epoch
         plt.subplot(1,2,2)
         plt.axis("off")
         plt.title("Fake Images")
-        plt.imshow(np.transpose(img_list[-1],(1,2,0)))
-        plt.show()
+        plt.imshow(np.transpose(img_list[-1][:12],(1,2,0)))
+        plt.savefig("./plots/fake_vs_real.png")
     get_real_vs_fake(real_batch, img_list)

@@ -5,8 +5,9 @@ import torchvision.transforms as transforms
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # root directory of the dataset
-dataroot = "../data"
+dataroot = "../data/"
 #number of workers for dataloader
 num_workers = 1
 # batch size during training
@@ -30,7 +31,7 @@ dataset = torchvision.datasets.ImageFolder(root=dataroot,
 
 #create data loader
 dataloader = torch.utils.data.DataLoader(dataset, 
-                                        batch_size=batch_size,
+                                        batch_size=64,
                                         shuffle=True,
                                         num_workers=num_workers)
 # device 
