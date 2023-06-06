@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
 
-import dataloader as my_dataloader
-import gan_model as gan
+import src.dataloader.dataloader as my_dataloader
+import src.models.dcgan_model as gan
 
 # Set random seed for reproducibility
 # manual_seed = 100
@@ -25,13 +25,13 @@ import gan_model as gan
 # global variables 
 
 # latent vector size
-z_size = 100
+z_size = 256
 # generator feature map size
 gen_f_size = 64
 # discriminator feature map size
 dis_f_size = 64
 # number of epochs
-num_epochs = 50
+num_epochs = 150
 # learning rate
 lr = 0.0001
 beta1 = 0.5
