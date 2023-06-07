@@ -1,6 +1,6 @@
 import torch
 import src.models.dcgan_model as gan
-import src.dataloader.dataloader as my_dataloader
+import src.loader.dataloader as my_dataloader
 import torchvision
 import matplotlib.pyplot as plt
 import numpy as np
