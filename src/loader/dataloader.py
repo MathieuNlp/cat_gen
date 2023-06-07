@@ -14,7 +14,7 @@ num_workers = 0
 # batch size during training
 batch_size = 64
 # training image size
-image_size = 128
+image_size = 64
 #number of channels
 num_channels = 3
     
