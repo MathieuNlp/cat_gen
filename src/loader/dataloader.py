@@ -6,43 +6,46 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from PIL import Image
+import yaml
 
-# root directory of the dataset
-dataroot = "../dataset"
-#number of workers for dataloader
-num_workers = 0
-# batch size during training
-batch_size = 64
-# training image size
-image_size = 64
-#number of channels
-num_channels = 3
+class MyDataloader():
+    """
+    GetDataloader class takes the configuration file parameters load the dataset then 
+    return the dataset wrapped in the dataloader
+
+    Arguments:
+        config: configuration file
+    Return:
+    dataloader: with function get_loader, return the dataloader
+    """
+    def __init__(self, config):
+        self.config = config
+        # root directory of the dataset
+        self.dataroot = config["DATA"]["DATA_ROOT_PATH"]
+        # batch size during training
+        self.batch_size = config["DATA"]["BATCH_SIZE"]
+        # training image size
+        self.image_size = config["DATA"]["IMAGE_SIZE"]
+        #number of channels
+        self.num_channels = config["DATA"]["NUM_CHANNELS"]
+        
+        # transformation to the images
+        self.transform_input = transforms.Compose([
+            transforms.Resize((self.image_size, self.image_size)),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            ])
+        
+    def get_loader(self):
+        # create dataset
+        self.dataset = torchvision.datasets.ImageFolder(root=self.dataroot,
+                                                transform=self.transform_input)
+        #create data loader
+        self.dataloader = torch.utils.data.DataLoader(dataset, 
+                                                batch_size=self.batch_size,
+                                                shuffle=True,
+                                                )
+
+        return self.dataloader
     
-# # transformation to the images
-transform_input = transforms.Compose([
-    transforms.Resize((image_size, image_size)),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-
-    ])
-
-# create dataset
-dataset = torchvision.datasets.ImageFolder(root=dataroot,
-                                        transform=transform_input)
-#create data loader
-
-dataloader = torch.utils.data.DataLoader(dataset, 
-                                        batch_size=batch_size,
-                                        shuffle=True,
-                                        )
-# device 
-device = torch.device("cuda" if (torch.cuda.is_available()) else "cpu") 
-
-# plot examples
-def plot_sample(dataloader, n_img=32):
-    real_batch = next(iter(dataloader)) # take first batch of 64 images
-    plt.figsize=(8,6)
-    plt.axis("off")
-    plt.title("Sample of training images")
-    plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:n_img], padding=2, normalize=True).cpu(), (1,2,0)))
-    plt.show()
+                                            
