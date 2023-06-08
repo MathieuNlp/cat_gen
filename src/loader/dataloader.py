@@ -8,11 +8,11 @@ from pathlib import Path
 from PIL import Image
 
 # root directory of the dataset
-dataroot = "../data/cats"
+dataroot = "../dataset"
 #number of workers for dataloader
 num_workers = 0
 # batch size during training
-batch_size = 32
+batch_size = 64
 # training image size
 image_size = 64
 #number of channels
@@ -21,10 +21,9 @@ num_channels = 3
 # # transformation to the images
 transform_input = transforms.Compose([
     transforms.Resize((image_size, image_size)),
-    transforms.CenterCrop(image_size),
     transforms.ToTensor(),
-    transforms.Lambda(lambda t: (t * 2) - 1)
-    #transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+
     ])
 
 # create dataset

@@ -25,11 +25,11 @@ import models.dcgan_model as dcgan
 # latent vector size
 z_size = 100
 # generator feature map size
-gen_f_size = 64
+gen_f_size = 128
 # discriminator feature map size
-dis_f_size = 64
+dis_f_size = 128
 # number of epochs
-num_epochs = 100
+num_epochs = 200
 # learning rate
 lrG = 2e-4
 lrD = .00005
