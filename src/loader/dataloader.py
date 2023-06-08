@@ -12,7 +12,7 @@ dataroot = "../data/cats"
 #number of workers for dataloader
 num_workers = 0
 # batch size during training
-batch_size = 64
+batch_size = 32
 # training image size
 image_size = 64
 #number of channels
@@ -23,7 +23,8 @@ transform_input = transforms.Compose([
     transforms.Resize((image_size, image_size)),
     transforms.CenterCrop(image_size),
     transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    transforms.Lambda(lambda t: (t * 2) - 1)
+    #transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
 
 # create dataset
@@ -34,7 +35,7 @@ dataset = torchvision.datasets.ImageFolder(root=dataroot,
 dataloader = torch.utils.data.DataLoader(dataset, 
                                         batch_size=batch_size,
                                         shuffle=True,
-                                        num_workers=num_workers)
+                                        )
 # device 
 device = torch.device("cuda" if (torch.cuda.is_available()) else "cpu") 
 

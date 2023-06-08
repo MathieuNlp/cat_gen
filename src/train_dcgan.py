@@ -31,8 +31,9 @@ dis_f_size = 64
 # number of epochs
 num_epochs = 100
 # learning rate
-lr = 0.0001
-beta1 = 0.2
+lrG = 2e-4
+lrD = .00005
+beta1 = 0.5
 
 show_data_sample = False
 
@@ -61,8 +62,8 @@ real_label = 1
 fake_label = 0
 
 # Adam optimizer
-optimizerG = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, 0.999))
-optimizerD = optim.Adam(discriminator.parameters(), lr=lr, betas=(beta1, 0.999))
+optimizerG = optim.Adam(generator.parameters(), lr=lrG, betas=(beta1, 0.999))
+optimizerD = optim.Adam(discriminator.parameters(), lr=lrD, betas=(beta1, 0.999))
 
 # training loop
 
@@ -135,13 +136,13 @@ def train(dataloader, generator, discriminator, real_label, fake_label, fixed_no
             D_losses.append(errD.item())
 
             # Check perfs of generator by saving generator's output on fixed_noise (def line 71)
-            if (iters % 1000 == 0) or ((epoch == num_epochs-1) and (batch == len(dataloader)-1)):
+            if (batch % 100 == 0) or ((epoch == num_epochs-1) and (batch == len(dataloader)-1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
                 img_list.append(torchvision.utils.make_grid(fake, padding=2, normalize=True))
 
             iters+=1
-        if (epoch % 30 == 0):
+        if (epoch % 25 == 0):
             torch.save(generator.state_dict(), save_PATH+f"generator_checkpoint_{epoch}.pt")
     return img_list, G_losses, D_losses
 
@@ -166,10 +167,10 @@ def visu_progress(img_list):
     fig = plt.figure(figsize=(8,8))
     plt.axis("off")
     ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
-    ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
+    ani = animation.ArtistAnimation(fig, ims, interval=100, repeat_delay=100, blit=True)
     writervideo = animation.FFMpegWriter(fps=60)
     ani.save('./plots/generation.mp4', writer=writervideo)
-visu_progress(img_list)
+#visu_progress(img_list)
 # Grab a batch of real images from the dataloader
 
 
