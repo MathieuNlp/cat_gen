@@ -16,6 +16,7 @@ python ./src/train_dcgan.py
 ```
 ## Generate samples from the generator
 To generate 64 cats from dcgan
+
 In config.yaml, choose a checkpoint for the generator (default is "./saved_model/generator_checkpoint_225.pt")
 and run
 ```sh
