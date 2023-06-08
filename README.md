@@ -30,7 +30,7 @@ python ./src/generate_fake.py
 The generation plot should be saved in ./plots folder as sample_from_generator.png
 ## Results
 Results can be found in the plots folder
-![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/160d8f52-4e22-4a64-83ea-ececfd8e45a4)
+![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/2867d1b9-a1ee-47ed-9299-3f0f57b74c3b)
 
 ## Source
 Work greatly inspired by for training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
