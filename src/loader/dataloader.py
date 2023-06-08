@@ -41,7 +41,7 @@ class MyDataloader():
         self.dataset = torchvision.datasets.ImageFolder(root=self.dataroot,
                                                 transform=self.transform_input)
         #create data loader
-        self.dataloader = torch.utils.data.DataLoader(dataset, 
+        self.dataloader = torch.utils.data.DataLoader(self.dataset, 
                                                 batch_size=self.batch_size,
                                                 shuffle=True,
                                                 )

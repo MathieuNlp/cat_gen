@@ -5,7 +5,7 @@ import utils
 
 with open("./config.yaml", "r") as ymlfile:
     config = yaml.load(ymlfile, Loader=yaml.Loader)
-
+    
 device = 'cpu'
 model_path = config["SAVE"]["MODEL_CHECKPOINT"]
 generator = dcgan.Generator(config)

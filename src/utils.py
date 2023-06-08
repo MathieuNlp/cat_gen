@@ -72,7 +72,7 @@ def plot_real_vs_fake(config, dataloader, img_list, device):
     plt.subplot(1,2,2)
     plt.axis("off")
     plt.title("Fake Images")
-    plt.imshow(np.transpose(img_list[-1][:32],(1,2,0)))
+    plt.imshow(np.transpose(torchvision.utils.make_grid(img_list[-1].to(device)[:32], padding=5, normalize=True).cpu(), (1,2,0)))
     plt.savefig("./plots/real_vs_fake.png")
 
 
@@ -94,7 +94,7 @@ def plot_visu_progress(config, img_list):
     ani.save(config["SAVE"]["SAVE_PLOTS_PATH"]+'generation.mp4', writer=writervideo)
 
 
-def plot_generate_fake(config, generator, device, n_img=32):
+def plot_generate_fake(config, generator, device, n_img=64):
     # take first batch of 64 images
     img_list = []
     fixed_noise = torch.randn(config["DATA"]["BATCH_SIZE"], config["GENERATOR"]["Z_SIZE"], 1, 1, device=device)

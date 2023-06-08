@@ -16,20 +16,20 @@ import models.dcgan_model as dcgan
 import utils
 
 
-with open("./config", "r") as ymlfile:
+with open("./config.yaml", "r") as ymlfile:
     config = yaml.load(ymlfile, Loader=yaml.Loader)
 
 # Create dataloader
 loader = mydl.MyDataloader(config)
 dataloader = loader.get_loader()
-device = "cuda" if torch.is_available() else "cpu"
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if config["DATA"]["SHOW_TRAIN_SAMPLE"] : utils.plot_sample(config, dataloader, device)
 
 # Create generator and discriminator
 generator = dcgan.Generator(config)
-discriminator = dcgan.Discriminator(config)
-# Weight initialization
 generator.apply(dcgan.weights_init)
+
+discriminator = dcgan.Discriminator(config)
 discriminator.apply(dcgan.weights_init)
 
 generator.to(device)
@@ -44,16 +44,18 @@ real_label = 1
 fake_label = 0
 
 # Adam optimizer
-optimizerG = optim.Adam(generator.parameters(), lr=config["GENERATOR"]["GENERATOR_LR"], betas=(config["TRAIN"]["BETA1"], 0.999))
-optimizerD = optim.Adam(discriminator.parameters(), lr=config["GENERATOR"]["DISCRIMINATOR_LR"], betas=(config["TRAIN"]["BETA1"], 0.999))
+optimizerG = optim.Adam(generator.parameters(), lr=float(config["GENERATOR"]["GENERATOR_LR"]), betas=(config["TRAIN"]["BETA1"], 0.999))
+optimizerD = optim.Adam(discriminator.parameters(), lr=float(config["DISCRIMINATOR"]["DISCRIMINATOR_LR"]), betas=(config["TRAIN"]["BETA1"], 0.999))
 
 # training loop
 # rules to take care : https://github.com/soumith/ganhacks
-def train(config, dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device, num_epochs):
+
+def train(config, dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device):
     img_list = []
     G_losses = []
     D_losses = []
     iters = 0
+    num_epochs = config["TRAIN"]["NUM_EPOCHS"]
     print('-'*15, 'Start Trainnig', '-'*15)
     for epoch in range(num_epochs) : 
         for batch, data in enumerate(dataloader):
@@ -120,14 +122,14 @@ def train(config, dataloader, generator, discriminator, real_label, fake_label, 
                 img_list.append(torchvision.utils.make_grid(fake, padding=2, normalize=True))
 
             iters+=1
-            
+
         if (epoch % 25 == 0):
-            torch.save(generator.state_dict(), config["SAVE_MODEL_PATH"] + f"generator_checkpoint_{epoch}.pt")
+            torch.save(generator.state_dict(), config["SAVE"]["SAVE_MODEL_PATH"] + f"generator_checkpoint_{epoch}.pt")
+
     return img_list, G_losses, D_losses
 
-num_epochs = config["TRAIN"]["NUM_EPOCHS"]
-img_list, G_losses, D_losses = train(dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device, num_epochs)
-
+img_list, G_losses, D_losses = train(config, dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device)
+torch.save(img_list)
 utils.plot_loss(config, G_losses, D_losses)
 #utils.plot_visu_progress(img_list)
 utils.plot_real_vs_fake(config, dataloader, img_list, device)
