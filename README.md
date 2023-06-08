@@ -4,7 +4,10 @@ The DCGAN generator takes a vector z from the latent space and uses transpose co
 ![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/432ddd64-f67f-426e-bee0-0184461d1866)
 
 I used a public dataset available here: https://www.kaggle.com/datasets/crawford/cat-dataset
-The model was trained on 225 epochs with a dataset of size around 9000 images. Modification were added in the training and dataset to avoid collapse mode:
+
+The model was trained on 225 epochs with a dataset of size around 9000 images. 
+
+Modification were added in the training and dataset to avoid collapse mode:
 - Preprocessing of the data: Center and crop the dataset to minimize error (Highly helped the model to converge)
 - Change of loss function from log(1-D(G(z))) to -log(D(G(z))) for the generator part (thanks to https://github.com/soumith/ganhacks)
 - 
