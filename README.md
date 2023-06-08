@@ -1,20 +1,32 @@
 # Cat Generator using DCGAN
-The model was trained on 200 epochs with small batches. 
+The model used is a DCGAN. Taking a vector z from the latent space, the generator uses transpose convolution to map the features and output an image of size 3x64x64.
+![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/432ddd64-f67f-426e-bee0-0184461d1866)
 
+The model was trained on 225 epochs with a dataset of size around 9000 images. Modification were added in the training and dataset to avoid collapse mode:
+- Preprocessing of the data: Center and crop the dataset to minimize error
+- Change of loss function from log(1-D(G(z))) to -log(D(G(z))) for the generator part (thanks to https://github.com/soumith/ganhacks)
+- 
+## Setup
+```sh
+pip install -r requirements.txt
+```
 ## Training
 To run the training
 ```sh
 python ./src/train_dcgan.py
 ```
-## Generate fake samples
+## Generate samples from the generator
 To generate 64 cats from dcgan
+In config.yaml, choose a checkpoint for the generator (default is "./saved_model/generator_checkpoint_225.pt")
+and run
 ```sh
 python ./src/generate_fake.py
 ```
+The generation plot should be saved in ./plots folder as sample_from_generator.png
 
 ## Source
-Work greatly inspired by: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
-
+Work greatly inspired by for training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
+For preocessing: https://github.com/AlexiaJM/Deep-learning-with-cats
 
 ## Author
 Mathieu Nalpon
