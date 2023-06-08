@@ -27,7 +27,7 @@ The generation plot should be saved in ./plots folder as sample_from_generator.p
 ## Source
 Work greatly inspired by for training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
 
-For preocessing: https://github.com/AlexiaJM/Deep-learning-with-cats
+For preprocessing: https://github.com/AlexiaJM/Deep-learning-with-cats
 
 ## Author
 Mathieu Nalpon
