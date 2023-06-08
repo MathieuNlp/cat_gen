@@ -30,6 +30,7 @@ python ./src/generate_fake.py
 The generation plot should be saved in ./plots folder as sample_from_generator.png
 ## Results
 Results can be found in the plots folder
+
 ![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/2867d1b9-a1ee-47ed-9299-3f0f57b74c3b)
 
 ## Source
