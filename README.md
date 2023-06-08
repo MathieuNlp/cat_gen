@@ -28,6 +28,9 @@ and run
 python ./src/generate_fake.py
 ```
 The generation plot should be saved in ./plots folder as sample_from_generator.png
+## Results
+Results can be found in the plots folder
+![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/160d8f52-4e22-4a64-83ea-ececfd8e45a4)
 
 ## Source
 Work greatly inspired by for training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
