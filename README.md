@@ -34,7 +34,7 @@ Results can be found in the ./plots folder
 ![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/2867d1b9-a1ee-47ed-9299-3f0f57b74c3b)
 
 ## Source
-Work greatly inspired by for training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
+For training: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
 
 For preprocessing: https://github.com/AlexiaJM/Deep-learning-with-cats
 
