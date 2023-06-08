@@ -3,6 +3,7 @@ import models.dcgan_model as dcgan
 import yaml
 import utils
 
+# Load the config file and generator trained and then generates images 
 with open("./config.yaml", "r") as ymlfile:
     config = yaml.load(ymlfile, Loader=yaml.Loader)
     

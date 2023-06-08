@@ -14,7 +14,7 @@ def plot_sample(config, dataloader, device, n_img=32):
         device: device where the data was sent
 
     Return:
-        Save a plot in ./plots folder of 32 samples of the dataset
+        Save a plot in ./plots folder of 32 samples of the dataset as sample_from_dataset.png
     """
     path_plots = config['SAVE']['SAVE_PLOTS_PATH']
     real_batch = next(iter(dataloader)) # take first batch of 64 images
@@ -22,12 +22,12 @@ def plot_sample(config, dataloader, device, n_img=32):
     plt.axis("off")
     plt.title("Sample of training images")
     plt.imshow(np.transpose(torchvision.utils.make_grid(real_batch[0].to(device)[:n_img], padding=2, normalize=True).cpu(), (1,2,0)))
-    plt.savefig(config['SAVE']['SAVE_PLOTS_PATH'] + "sample_from_dataset")
+    plt.savefig(config['SAVE']['SAVE_PLOTS_PATH'] + "sample_from_dataset.png")
 
 
 def plot_loss(config, G_loss, D_loss):
     """
-    Plot a grid of the loss of generator and discriminator during training
+    Plot a grid of the loss of generator and discriminator during training 
 
     Arguments:
         config: config file
@@ -35,7 +35,7 @@ def plot_loss(config, G_loss, D_loss):
         D_loss: list of loss from discriminator 
 
     Return:
-        Save a plot in ./plots folder of the loss
+        Save a plot in ./plots folder of the loss as loss_D_&_G.png
     """
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training")
@@ -58,7 +58,7 @@ def plot_real_vs_fake(config, dataloader, img_list, device):
         device: device where we loaded the model
     
     Return:
-        Save the comparison plot: fake images from generator vs real images from dataset in the folder ./plots
+        Save the comparison plot: fake images from generator vs real images from dataset in the folder ./plots as plots/real_vs_fake.png
     """
     real_batch = next(iter(dataloader))
     # Plot the real images
@@ -84,7 +84,7 @@ def plot_visu_progress(config, img_list):
         img_list: list of images generated from generator every 100 batches
     
     Return:
-        Save the animation in the folder ./plots
+        Save the animation in the folder ./plots as generation.mp4
     """
     fig = plt.figure(figsize=(8,8))
     plt.axis("off")
@@ -95,6 +95,15 @@ def plot_visu_progress(config, img_list):
 
 
 def plot_generate_fake(config, generator, device, n_img=64):
+    """
+    Function that takes the generator (preferably trained) and gives a geration from a random latent vector z
+
+    Arguments:
+        generator: generator model (preferably trained)
+    
+    Return:
+        Save the generation sample from the generator in the folder as sample_from_generator.png
+    """
     # take first batch of 64 images
     img_list = []
     fixed_noise = torch.randn(config["DATA"]["BATCH_SIZE"], config["GENERATOR"]["Z_SIZE"], 1, 1, device=device)

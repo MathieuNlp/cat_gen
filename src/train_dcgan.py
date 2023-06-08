@@ -51,6 +51,24 @@ optimizerD = optim.Adam(discriminator.parameters(), lr=float(config["DISCRIMINAT
 # rules to take care : https://github.com/soumith/ganhacks
 
 def train(config, dataloader, generator, discriminator, real_label, fake_label, fixed_noise, device):
+    """
+    Train the generator and discriminator on the dataset wrapped by the dataloader
+
+    Arguments:
+        config: config file
+        dataloader: dataloader wrapping the dataset
+        generator: model of the generator
+        discriminator: model of the discriminator
+        real_label: equals to 1, label for the classification of images from the dataset
+        fake_label: equals to 0, label for the classification of images from the generator
+        fixed_noise: tensor z, which is gaussian, representing the latent space variable
+        device: device where we loaded models and data
+
+    Return:
+        img_list: list of images batches after every 100 iterations (iteration is training on a batch)
+        G_losses: list of the generator loss during training
+        D_losses:list of the discriminator loss during training
+    """
     img_list = []
     G_losses = []
     D_losses = []
