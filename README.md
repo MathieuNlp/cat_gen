@@ -1,10 +1,13 @@
 # Cat Generator using DCGAN
-The model used is a DCGAN. Taking a vector z from the latent space, the generator uses transpose convolution to map the features and output an image of size 3x64x64.
+The purpose of this project is generation cats images. To do so, I used a GAN model, specificaly a DCGAN model.
+The DCGAN generator takes a vector z from the latent space and uses transpose convolution to map the features and output an image of size 3x64x64. The generator uses the same procedure but inverted.
 ![image](https://github.com/MathieuNlp/cat_gen/assets/78492189/432ddd64-f67f-426e-bee0-0184461d1866)
 
+I used a public dataset available here: https://www.kaggle.com/datasets/crawford/cat-dataset
 The model was trained on 225 epochs with a dataset of size around 9000 images. Modification were added in the training and dataset to avoid collapse mode:
-- Preprocessing of the data: Center and crop the dataset to minimize error
+- Preprocessing of the data: Center and crop the dataset to minimize error (Highly helped the model to converge)
 - Change of loss function from log(1-D(G(z))) to -log(D(G(z))) for the generator part (thanks to https://github.com/soumith/ganhacks)
+- 
 ## Setup
 ```sh
 pip install -r requirements.txt
